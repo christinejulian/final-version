@@ -1,4 +1,3 @@
-
 // MCDONALD'S STYLE FAST-FOOD SATIRE GAME LOGIC
 let gameState = {
     money: 50000,
