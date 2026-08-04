@@ -1,127 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QuestLogs - Your Video Game Centre</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuestLogs - Gaming Hub & Fast Food Empire</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- RGB Border Header -->
+    <header class="rgb-border">
+        <div class="logo">QUESTLOGS</div>
+        <nav>
+            <a href="#hero">Home</a>
+            <a href="#store">Gear Shop</a>
+            <a href="#satire-game">Fast Food Tycoon</a>
+        </nav>
+    </header>
 
-  <!-- Navigation -->
-  <header>
-    <div class="logo">QUESTLOGS</div>
-    <nav>
-      <a href="#hero">Home</a>
-      <a href="#categories">Categories</a>
-      <a href="#satire-game">Fast Food Simulator</a>
-      <a href="#shop">Gear Shop</a>
-    </nav>
-  </header>
-
-  <!-- Hero Section -->
-  <section id="hero" class="hero">
-    <div class="hero-content">
-      <h1>Your One-Stop Video Game Centre</h1>
-      <p>Explore games, test your strategy, and gear up with top-tier hardware.</p>
-      <a href="#shop" class="btn">SHOP NOW &rarr;</a>
-    </div>
-  </section>
-
-  <!-- Categories Section -->
-  <section id="categories" class="categories">
-    <h2>Game Categories</h2>
-    <div class="card-grid">
-      <div class="card">
-        <h3>Real Time Strategy</h3>
-        <p>Challenge yourself in a battle of wits and skill vs NPCs and other players alike.</p>
-        <a href="#satire-game" class="btn-sm">SEE MORE &rarr;</a>
-      </div>
-      <div class="card">
-        <h3>Role-Playing Games</h3>
-        <p>Lose yourself in exotic worlds where your mission is to save the day.</p>
-        <button class="btn-sm">SEE MORE &rarr;</button>
-      </div>
-      <div class="card">
-        <h3>Casual Games</h3>
-        <p>A collection of unique and quirky games to while away your day.</p>
-        <button class="btn-sm">SEE MORE &rarr;</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Satire Game Section -->
-  <section id="satire-game" class="game-section">
-    <h2>Fast Food Tycoon: Late-Stage Capitalism Edition</h2>
-    <p class="subtitle">Satirizing fast food price hikes (Burger King, Starbucks, Dunkin', & More)</p>
-    
-    <div class="game-container">
-      <div class="game-stats">
-        <div>Corporate Revenue: $<span id="revenue">0</span></div>
-        <div>Public Outrage: <span id="outrage">0</span>%</div>
-      </div>
-
-      <div class="chains-grid">
-        <!-- Burger King -->
-        <div class="chain-card">
-          <h3>Burger Empire</h3>
-          <p>Current Price: $<span id="bk-price">12</span></p>
-          <button onclick="raisePrice('bk', 2)">Shrink Burger & Raise Price (+$2)</button>
-          <button onclick="raisePrice('bk', 10)">Add "Surge Pricing" (+$10)</button>
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <h1>YOUR ONE-STOP VIDEO GAME CENTRE</h1>
+            <p>Explore gear, play strategy simulations, and experience the ultimate gaming portal.</p>
+            <a href="#store" class="btn-rgb">SHOP NOW</a>
         </div>
+    </section>
 
-        <!-- Starbucks -->
-        <div class="chain-card">
-          <h3>Star-Beans Coffee</h3>
-          <p>Current Price: $<span id="sb-price">8</span></p>
-          <button onclick="raisePrice('sb', 3)">Rename Size to 'Giga' (+$3)</button>
-          <button onclick="raisePrice('sb', 5)">Charge Extra for Oat Milk (+$5)</button>
+    <!-- Equipment Store -->
+    <section id="store" class="section">
+        <h2>GAMING GEAR STORE</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Pro RGB Mechanical Keyboard</h3>
+                <p class="price">$129.99</p>
+                <button onclick="addToCart('Keyboard')">Buy Now</button>
+            </div>
+            <div class="card">
+                <h3>Precision Wireless Gaming Mouse</h3>
+                <p class="price">$79.99</p>
+                <button onclick="addToCart('Mouse')">Buy Now</button>
+            </div>
+            <div class="card">
+                <h3>7.1 Surround Sound Headset</h3>
+                <p class="price">$99.99</p>
+                <button onclick="addToCart('Headset')">Buy Now</button>
+            </div>
         </div>
+    </section>
 
-        <!-- Dunkin -->
-        <div class="chain-card">
-          <h3>Dunk-O Donuts</h3>
-          <p>Current Price: $<span id="dk-price">4</span></p>
-          <button onclick="raisePrice('dk', 1.5)">Make Hole Bigger (+$1.50)</button>
-          <button onclick="raisePrice('dk', 4)">Label as "Artisanal Glaze" (+$4)</button>
+    <!-- Satire Simulation Game Section -->
+    <section id="satire-game" class="section">
+        <h2>FAST FOOD EMPIRE: THE INFLATION SIMULATOR</h2>
+        <p class="subtitle">Satirical corporate simulation: Balance profit, raise prices, and cut quality!</p>
+        
+        <div class="game-container">
+            <div class="dashboard">
+                <div class="stat-box">Brand: <span id="brand-name">Burger Kingpin</span></div>
+                <div class="stat-box">Capital: $<span id="money">1000</span></div>
+                <div class="stat-box">Combo Price: $<span id="price">12.00</span></div>
+                <div class="stat-box">Quality: <span id="quality">100</span>%</div>
+                <div class="stat-box">Public Outrage: <span id="outrage">0</span>%</div>
+            </div>
+
+            <canvas id="gameCanvas" width="800" height="400"></canvas>
+
+            <div class="controls">
+                <button onclick="adjustPrice(1)">Raise Price (+$1)</button>
+                <button onclick="adjustPrice(-1)">Lower Price (-$1)</button>
+                <button onclick="cutQuality()">Shrinkflation (-10% Quality)</button>
+                <button onclick="lobbyGovernment()">Lobbying Campaign (-$200)</button>
+                <button onclick="switchBrand()">Switch Franchise</button>
+            </div>
         </div>
-      </div>
+    </section>
 
-      <div class="game-controls">
-        <button id="run-campaign-btn" class="btn" onclick="runCampaign()">Run Distracting Marketing Campaign (-$50 Revenue, -20% Outrage)</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Gear Shop Section -->
-  <section id="shop" class="shop-section">
-    <h2>Gaming Equipment Shop</h2>
-    <div class="card-grid">
-      <div class="card shop-card">
-        <h3>RGB Mechanical Keyboard</h3>
-        <p class="price">$129.99</p>
-        <button onclick="addToCart('RGB Mechanical Keyboard', 129.99)">Add to Cart</button>
-      </div>
-      <div class="card shop-card">
-        <h3>Ultra-Precision Wireless Mouse</h3>
-        <p class="price">$79.99</p>
-        <button onclick="addToCart('Ultra-Precision Wireless Mouse', 79.99)">Add to Cart</button>
-      </div>
-      <div class="card shop-card">
-        <h3>7.1 Surround Sound Headset</h3>
-        <p class="price">$149.99</p>
-        <button onclick="addToCart('7.1 Surround Sound Headset', 149.99)">Add to Cart</button>
-      </div>
-    </div>
-
-    <!-- Cart Summary -->
-    <div class="cart-summary">
-      <h3>Your Cart</h3>
-      <ul id="cart-items"></ul>
-      <p><strong>Total: $<span id="cart-total">0.00</span></strong></p>
-    </div>
-  </section>
-
-  <script src="main.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
