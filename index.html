@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUESTLOGS - Video Game Equipment Store & Fast-Food Satire Games</title>
+    
+<style>
+:root {
+    --bg-main: #060411;
+    --bg-card: #0e0926;
+    --bg-card-hover: #160e3b;
+    --accent-purple: #8141ff;
+    --accent-purple-bright: #9e6eff;
+    --text-white: #ffffff;
+    --text-muted: #a39ebc;
+    --border-color: #271a52;
+    --danger: #ff3366;
+    --success: #00e676;
+    --warning: #ffb300;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: var(--bg-main); color: var(--text-white); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* Header */
+.main-header { background: rgba(6, 4, 17, 0.95); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(8px); }
+.header-container { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
+.logo { font-size: 1.8rem; font-weight: 900; letter-spacing: 2px; color: #fff; text-decoration: none; }
+.logo-accent { color: var(--accent-purple); }
+.main-nav { display: flex; align-items: center; gap: 1.5rem; }
+.main-nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: color 0.2s; }
+.main-nav a:hover, .main-nav a.highlight-link { color: var(--accent-purple-bright); }
+.cart-link { background: #1a103c; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border-color); color: #fff !important; }
+.btn-login-nav { background: var(--accent-purple); color: #fff !important; padding: 6px 16px; border-radius: 20px; text-decoration: none; font-weight: 700; }
+.btn-login-nav:hover { background: var(--accent-purple-bright); }
+
+/* Layout & Footer */
+.page-wrapper { flex: 1; max-width: 1280px; width: 100%; margin: 0 auto; padding: 2rem; }
+.main-footer { background: #04020a; border-top: 1px solid var(--border-color); padding: 3rem 2rem 1rem 2rem; margin-top: auto; }
+.footer-container { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+.footer-col h3, .footer-col h4 { color: #fff; margin-bottom: 1rem; }
+.footer-col p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 0.5rem; }
+.footer-col ul li a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
+.footer-col ul li a:hover { color: var(--accent-purple-bright); }
+.footer-bottom { max-width: 1280px; margin: 0 auto; text-align: center; padding-top: 1.5rem; border-top: 1px solid #140d30; color: var(--text-muted); font-size: 0.85rem; }
+
+/* Buttons & Elements */
+.btn-primary { display: inline-block; background: var(--accent-purple); color: #fff; padding: 10px 22px; border-radius: 25px; font-weight: 700; text-decoration: none; border: none; cursor: pointer; transition: transform 0.2s, background 0.2s; }
+.btn-primary:hover { background: var(--accent-purple-bright); transform: translateY(-2px); }
+.btn-secondary { display: inline-block; background: transparent; color: #fff; padding: 10px 22px; border-radius: 25px; font-weight: 700; text-decoration: none; border: 1px solid var(--accent-purple); cursor: pointer; }
+.btn-secondary:hover { background: rgba(129, 65, 255, 0.2); }
+
+/* Grid Cards */
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+.card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s; }
+.card:hover { transform: translateY(-4px); border-color: var(--accent-purple); }
+.card-img-wrap { width: 100%; height: 190px; overflow: hidden; position: relative; }
+.card-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.card-body { padding: 1.2rem; display: flex; flex-direction: column; flex: 1; }
+.card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; color: #fff; }
+.card-desc { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; flex: 1; }
+.card-price { font-size: 1.3rem; font-weight: 800; color: var(--accent-purple-bright); margin-bottom: 0.8rem; }
+.rating { color: #ffca28; font-size: 0.85rem; margin-bottom: 0.5rem; }
+
+/* Modal Detail */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center; padding: 1rem; }
+.modal-content { background: var(--bg-card); border: 1px solid var(--accent-purple); border-radius: 12px; max-width: 650px; width: 100%; padding: 2rem; position: relative; }
+.close-modal { position: absolute; top: 1rem; right: 1.5rem; font-size: 1.8rem; color: #fff; cursor: pointer; }
+</style>
+
+</head>
+<body>
+    
+<header class="main-header">
+    <div class="header-container">
+        <a href="index.html" class="logo">
+            <span class="logo-accent">QUEST</span>LOGS
+        </a>
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="shop.html">Equipment Shop (20+)</a>
+            <a href="game_mcdonalds.html" class="highlight-link">Fast-Food Satire Game</a>
+            <a href="game_arcade.html">Arcade Minigame</a>
+            <a href="blog.html">Blog & News</a>
+            <a href="cart.html" class="cart-link">
+                🛒 Cart (<span class="cart-badge">0</span>)
+            </a>
+            <a href="login.html" class="btn-login-nav">Account</a>
+        </nav>
+    </div>
+</header>
+
+
+    <section style="background: radial-gradient(circle at 70% 30%, rgba(129, 65, 255, 0.25), transparent 60%); padding: 4rem 2rem; border-bottom: 1px solid var(--border-color);">
+        <div style="max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem;">
+            <div style="max-width: 600px;">
+                <span style="background: rgba(129, 65, 255, 0.2); border: 1px solid var(--accent-purple); color: var(--accent-purple-bright); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">
+                    Featured Platform Release
+                </span>
+                <h1 style="font-size: 3.2rem; font-weight: 900; line-height: 1.1; margin: 1rem 0;">
+                    YOUR ONE-STOP VIDEO GAME CENTRE
+                </h1>
+                <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem;">
+                    Buy high-performance esports mechanical keyboards, 4K curved monitors, and wireless headsets, or jump directly into our original playable video game satires exposing modern corporate fast-food inflation.
+                </p>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a href="shop.html" class="btn-primary">Shop Gaming Gear (20+ Items)</a>
+                    <a href="game_mcdonalds.html" class="btn-secondary">Play Fast-Food Satire Game &rarr;</a>
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 300px; text-align: center;">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=700&q=80" alt="Esports Gaming Rig Setup" style="width: 100%; max-width: 500px; border-radius: 16px; border: 2px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            </div>
+        </div>
+    </section>
+
+    <main class="page-wrapper">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <h2 style="font-size: 2rem; font-weight: 800;">BROWSE CATEGORIES & GAMES</h2>
+            <p style="color: var(--text-muted);">Explore our ecosystem of hardware and interactive media</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 4rem;">
+            <div style="background: var(--bg-card); padding: 1.8rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=400&q=80" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;" alt="Pro Hardware">
+                <h3>Esports Hardware</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0.5rem 0 1rem 0;">Top tier mechanical switches, optical mice, and liquid-cooled rigs.</p>
+                <a href="shop.html" class="btn-primary">Browse Hardware</a>
+            </div>
+
+            <div style="background: var(--bg-card); padding: 1.8rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
+                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;" alt="Satire Tycoon">
+                <h3>McFast® Inflation Tycoon</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0.5rem 0 1rem 0;">A full 4-sector strategy sim mocking fast-food price hikes and shrinkflation.</p>
+                <a href="game_mcdonalds.html" class="btn-primary">Play Tycoon Game</a>
+            </div>
+
+            <div style="background: var(--bg-card); padding: 1.8rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center;">
+                <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=400&q=80" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;" alt="Arcade Shooter">
+                <h3>Inflation Defender Arcade</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0.5rem 0 1rem 0;">Shoot down rising price tags before they destroy your gaming budget!</p>
+                <a href="game_arcade.html" class="btn-primary">Play Arcade Game</a>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 3rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.8rem; font-weight: 800;">FEATURED GAMING GEAR</h2>
+                <a href="shop.html" style="color: var(--accent-purple-bright); text-decoration: none; font-weight: 700;">View All 20+ Items &rarr;</a>
+            </div>
+            <div id="home-featured-grid" class="grid-4"></div>
+        </div>
+    </main>
+
+    
+<footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-col">
+            <h3>QUESTLOGS NETWORK</h3>
+            <p>Your ultimate destination for professional esports hardware, gaming media, and corporate satire simulations.</p>
+            <p><strong>Address:</strong> 123 Quest Way, Suite 100, Austin, TX 78701</p>
+            <p><strong>Phone:</strong> (512) 555-0199</p>
+            <p><strong>Email:</strong> support@questlogs.com</p>
+        </div>
+        <div class="footer-col">
+            <h4>Quick Navigation</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Gaming Gear Store</a></li>
+                <li><a href="game_mcdonalds.html">McFast-Food Tycoon Game</a></li>
+                <li><a href="game_arcade.html">Inflation Defender Minigame</a></li>
+                <li><a href="blog.html">Industry News & Articles</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Customer Support</h4>
+            <ul>
+                <li><a href="cart.html">Shopping Cart & Checkout</a></li>
+                <li><a href="login.html">Login / Register</a></li>
+                <li><a href="article_inflation.html">Featured Report: Fast Food Inflation</a></li>
+                <li><a href="#">Privacy Policy & Terms</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Join QuestLogs Newsletter</h4>
+            <p>Get instant updates on equipment releases and new satirical releases.</p>
+            <form onsubmit="event.preventDefault(); alert('Subscribed successfully!');" style="margin-top:10px;">
+                <input type="email" placeholder="Enter your email" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #332363; background:#0b081d; color:#fff; margin-bottom:8px;">
+                <button type="submit" style="width:100%; padding:8px; background:#8141ff; color:#fff; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Subscribe</button>
+            </form>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 QuestLogs Interactive Network. All Rights Reserved. Address: 123 Quest Way, Suite 100, Austin, TX 78701 | Phone: (512) 555-0199</p>
+    </div>
+</footer>
+
+
+    <script src="products_store.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount();
+            const grid = document.getElementById('home-featured-grid');
+            const featured = PRODUCTS.slice(0, 4);
+            featured.forEach(p => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-img-wrap">
+                            <img src="${p.img}" alt="${p.name}">
+                        </div>
+                        <div class="card-body">
+                            <div class="rating">★★★★★ (${p.rating})</div>
+                            <h3 class="card-title">${p.name}</h3>
+                            <p class="card-desc">${p.desc}</p>
+                            <div class="card-price">$${p.price.toFixed(2)}</div>
+                            <button onclick="addToCart(${p.id})" class="btn-primary" style="width:100%;">Add To Cart</button>
+                        </div>
+                    </div>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>
