@@ -1,73 +1,115 @@
-// --- Satire Game Logic ---
-let revenue = 0;
+// Store Cart Functionality
+function addToCart(item) {
+    alert(`${item} added to cart!`);
+}
+
+// 2D Fast Food Satire Game Engine
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+const brands = [
+    { name: 'Burger Kingpin', color: '#d62300' },
+    { name: 'Star-Bucks Millions', color: '#00704a' },
+    { name: 'Dunkin Inflation', color: '#ff6600' }
+];
+
+let currentBrandIndex = 0;
+let money = 1000;
+let price = 12.00;
+let quality = 100;
 let outrage = 0;
+let customers = [];
 
-const prices = {
-  bk: 12,
-  sb: 8,
-  dk: 4
-};
+class Customer {
+    constructor() {
+        this.x = 0;
+        this.y = 350;
+        this.speed = 2 + Math.random() * 2;
+        this.willBuy = Math.random() * 100 > (price * 3 + outrage - quality / 2);
+    }
 
-function raisePrice(chain, amount) {
-  prices[chain] += amount;
-  revenue += amount * 10; // Earn corporate profit based on price hike
-  outrage += Math.floor(amount * 2.5); // Public backlash increases
+    update() {
+        this.x += this.speed;
+    }
 
-  // Update DOM
-  document.getElementById(`${chain}-price`).innerText = prices[chain].toFixed(2);
-  updateGameStats();
+    draw() {
+        ctx.fillStyle = this.willBuy ? '#00ff88' : '#ff3366';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
+        ctx.fill();
+    }
 }
 
-function runCampaign() {
-  if (revenue >= 50) {
-    revenue -= 50;
-    outrage = Math.max(0, outrage - 20);
-    updateGameStats();
-  } else {
-    alert("Not enough revenue to run a PR campaign!");
-  }
+function adjustPrice(amount) {
+    price = Math.max(1, price + amount);
+    outrage = Math.min(100, Math.max(0, outrage + (amount > 0 ? 5 : -3)));
+    updateUI();
 }
 
-function updateGameStats() {
-  document.getElementById('revenue').innerText = revenue;
-  document.getElementById('outrage').innerText = outrage;
-
-  if (outrage >= 100) {
-    alert("Outrage reached 100%! Consumers boycotted your franchises. Game Over!");
-    // Reset Game
-    revenue = 0;
-    outrage = 0;
-    prices.bk = 12;
-    prices.sb = 8;
-    prices.dk = 4;
-    document.getElementById('bk-price').innerText = prices.bk;
-    document.getElementById('sb-price').innerText = prices.sb;
-    document.getElementById('dk-price').innerText = prices.dk;
-    updateGameStats();
-  }
+function cutQuality() {
+    quality = Math.max(10, quality - 10);
+    outrage = Math.min(100, outrage + 8);
+    updateUI();
 }
 
-// --- Cart Logic ---
-let cart = [];
-let total = 0;
-
-function addToCart(itemName, itemPrice) {
-  cart.push({ name: itemName, price: itemPrice });
-  total += itemPrice;
-  
-  renderCart();
+function lobbyGovernment() {
+    if (money >= 200) {
+        money -= 200;
+        outrage = Math.max(0, outrage - 30);
+        updateUI();
+    }
 }
 
-function renderCart() {
-  const cartList = document.getElementById('cart-items');
-  const cartTotal = document.getElementById('cart-total');
-  
-  cartList.innerHTML = '';
-  cart.forEach(item => {
-    const li = document.createElement('li');
-    li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
-    cartList.appendChild(li);
-  });
-  
-  cartTotal.innerText = total.toFixed(2);
+function switchBrand() {
+    currentBrandIndex = (currentBrandIndex + 1) % brands.length;
+    updateUI();
 }
+
+function updateUI() {
+    document.getElementById('brand-name').innerText = brands[currentBrandIndex].name;
+    document.getElementById('money').innerText = money.toFixed(2);
+    document.getElementById('price').innerText = price.toFixed(2);
+    document.getElementById('quality').innerText = quality;
+    document.getElementById('outrage').innerText = Math.floor(outrage);
+}
+
+// Game Loop
+function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw Restaurant Counter
+    ctx.fillStyle = brands[currentBrandIndex].color;
+    ctx.fillRect(700, 250, 100, 150);
+    ctx.fillStyle = '#fff';
+    ctx.fillText('STORE', 725, 320);
+
+    // Spawn Customers
+    if (Math.random() < 0.03) {
+        customers.push(new Customer());
+    }
+
+    // Process Customers
+    for (let i = customers.length - 1; i >= 0; i--) {
+        let c = customers[i];
+        c.update();
+        c.draw();
+
+        // Customer reaches store
+        if (c.x >= 700) {
+            if (c.willBuy) {
+                let margin = price - (quality * 0.05); // Lower quality = lower cost to make
+                money += margin;
+                updateUI();
+            } else {
+                outrage = Math.min(100, outrage + 0.5);
+                updateUI();
+            }
+            customers.splice(i, 1);
+        }
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+// Start simulation
+gameLoop();
