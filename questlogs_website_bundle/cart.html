@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart & Checkout - QUESTLOGS</title>
+    
+<style>
+:root {
+    --bg-main: #060411;
+    --bg-card: #0e0926;
+    --bg-card-hover: #160e3b;
+    --accent-purple: #8141ff;
+    --accent-purple-bright: #9e6eff;
+    --text-white: #ffffff;
+    --text-muted: #a39ebc;
+    --border-color: #271a52;
+    --danger: #ff3366;
+    --success: #00e676;
+    --warning: #ffb300;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: var(--bg-main); color: var(--text-white); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* Header */
+.main-header { background: rgba(6, 4, 17, 0.95); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(8px); }
+.header-container { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
+.logo { font-size: 1.8rem; font-weight: 900; letter-spacing: 2px; color: #fff; text-decoration: none; }
+.logo-accent { color: var(--accent-purple); }
+.main-nav { display: flex; align-items: center; gap: 1.5rem; }
+.main-nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: color 0.2s; }
+.main-nav a:hover, .main-nav a.highlight-link { color: var(--accent-purple-bright); }
+.cart-link { background: #1a103c; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border-color); color: #fff !important; }
+.btn-login-nav { background: var(--accent-purple); color: #fff !important; padding: 6px 16px; border-radius: 20px; text-decoration: none; font-weight: 700; }
+.btn-login-nav:hover { background: var(--accent-purple-bright); }
+
+/* Layout & Footer */
+.page-wrapper { flex: 1; max-width: 1280px; width: 100%; margin: 0 auto; padding: 2rem; }
+.main-footer { background: #04020a; border-top: 1px solid var(--border-color); padding: 3rem 2rem 1rem 2rem; margin-top: auto; }
+.footer-container { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+.footer-col h3, .footer-col h4 { color: #fff; margin-bottom: 1rem; }
+.footer-col p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 0.5rem; }
+.footer-col ul li a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
+.footer-col ul li a:hover { color: var(--accent-purple-bright); }
+.footer-bottom { max-width: 1280px; margin: 0 auto; text-align: center; padding-top: 1.5rem; border-top: 1px solid #140d30; color: var(--text-muted); font-size: 0.85rem; }
+
+/* Buttons & Elements */
+.btn-primary { display: inline-block; background: var(--accent-purple); color: #fff; padding: 10px 22px; border-radius: 25px; font-weight: 700; text-decoration: none; border: none; cursor: pointer; transition: transform 0.2s, background 0.2s; }
+.btn-primary:hover { background: var(--accent-purple-bright); transform: translateY(-2px); }
+.btn-secondary { display: inline-block; background: transparent; color: #fff; padding: 10px 22px; border-radius: 25px; font-weight: 700; text-decoration: none; border: 1px solid var(--accent-purple); cursor: pointer; }
+.btn-secondary:hover { background: rgba(129, 65, 255, 0.2); }
+
+/* Grid Cards */
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+.card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s; }
+.card:hover { transform: translateY(-4px); border-color: var(--accent-purple); }
+.card-img-wrap { width: 100%; height: 190px; overflow: hidden; position: relative; }
+.card-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.card-body { padding: 1.2rem; display: flex; flex-direction: column; flex: 1; }
+.card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; color: #fff; }
+.card-desc { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; flex: 1; }
+.card-price { font-size: 1.3rem; font-weight: 800; color: var(--accent-purple-bright); margin-bottom: 0.8rem; }
+.rating { color: #ffca28; font-size: 0.85rem; margin-bottom: 0.5rem; }
+
+/* Modal Detail */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center; padding: 1rem; }
+.modal-content { background: var(--bg-card); border: 1px solid var(--accent-purple); border-radius: 12px; max-width: 650px; width: 100%; padding: 2rem; position: relative; }
+.close-modal { position: absolute; top: 1rem; right: 1.5rem; font-size: 1.8rem; color: #fff; cursor: pointer; }
+</style>
+
+    <style>
+        .cart-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+        .cart-table th, .cart-table td { padding: 1rem; border-bottom: 1px solid var(--border-color); text-align: left; }
+        .cart-table th { color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; }
+        .cart-item-img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; }
+        .qty-btn { background: var(--border-color); color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .cart-summary { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; max-width: 400px; margin-left: auto; }
+    </style>
+</head>
+<body>
+    
+<header class="main-header">
+    <div class="header-container">
+        <a href="index.html" class="logo">
+            <span class="logo-accent">QUEST</span>LOGS
+        </a>
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="shop.html">Equipment Shop (20+)</a>
+            <a href="game_mcdonalds.html" class="highlight-link">Fast-Food Satire Game</a>
+            <a href="game_arcade.html">Arcade Minigame</a>
+            <a href="blog.html">Blog & News</a>
+            <a href="cart.html" class="cart-link">
+                🛒 Cart (<span class="cart-badge">0</span>)
+            </a>
+            <a href="login.html" class="btn-login-nav">Account</a>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-wrapper">
+        <h1 style="font-size: 2.2rem; font-weight: 900; margin-bottom: 1.5rem;">YOUR SHOPPING CART</h1>
+
+        <div id="cart-empty-msg" style="display: none; text-align: center; padding: 4rem 1rem;">
+            <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 1.5rem;">Your shopping cart is currently empty.</p>
+            <a href="shop.html" class="btn-primary">Browse Hardware Shop &rarr;</a>
+        </div>
+
+        <div id="cart-content">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-rows"></tbody>
+            </table>
+
+            <div class="cart-summary">
+                <h3 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Order Summary</h3>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>Subtotal:</span>
+                    <span id="subtotal-val">$0.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span>Shipping:</span>
+                    <span style="color: var(--success);">FREE</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; font-size: 1.2rem; font-weight: bold;">
+                    <span>Grand Total:</span>
+                    <span id="grandtotal-val" style="color: var(--accent-purple-bright);">$0.00</span>
+                </div>
+                <button onclick="checkout()" class="btn-primary" style="width: 100%;">Proceed to Checkout</button>
+            </div>
+        </div>
+    </main>
+
+    
+<footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-col">
+            <h3>QUESTLOGS NETWORK</h3>
+            <p>Your ultimate destination for professional esports hardware, gaming media, and corporate satire simulations.</p>
+            <p><strong>Address:</strong> 123 Quest Way, Suite 100, Austin, TX 78701</p>
+            <p><strong>Phone:</strong> (512) 555-0199</p>
+            <p><strong>Email:</strong> support@questlogs.com</p>
+        </div>
+        <div class="footer-col">
+            <h4>Quick Navigation</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Gaming Gear Store</a></li>
+                <li><a href="game_mcdonalds.html">McFast-Food Tycoon Game</a></li>
+                <li><a href="game_arcade.html">Inflation Defender Minigame</a></li>
+                <li><a href="blog.html">Industry News & Articles</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Customer Support</h4>
+            <ul>
+                <li><a href="cart.html">Shopping Cart & Checkout</a></li>
+                <li><a href="login.html">Login / Register</a></li>
+                <li><a href="article_inflation.html">Featured Report: Fast Food Inflation</a></li>
+                <li><a href="#">Privacy Policy & Terms</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Join QuestLogs Newsletter</h4>
+            <p>Get instant updates on equipment releases and new satirical releases.</p>
+            <form onsubmit="event.preventDefault(); alert('Subscribed successfully!');" style="margin-top:10px;">
+                <input type="email" placeholder="Enter your email" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #332363; background:#0b081d; color:#fff; margin-bottom:8px;">
+                <button type="submit" style="width:100%; padding:8px; background:#8141ff; color:#fff; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Subscribe</button>
+            </form>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 QuestLogs Interactive Network. All Rights Reserved. Address: 123 Quest Way, Suite 100, Austin, TX 78701 | Phone: (512) 555-0199</p>
+    </div>
+</footer>
+
+
+    <script src="products_store.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount();
+            renderCart();
+        });
+
+        function renderCart() {
+            const rows = document.getElementById('cart-rows');
+            const emptyMsg = document.getElementById('cart-empty-msg');
+            const cartContent = document.getElementById('cart-content');
+
+            if (!cart || cart.length === 0) {
+                emptyMsg.style.display = 'block';
+                cartContent.style.display = 'none';
+                return;
+            }
+
+            emptyMsg.style.display = 'none';
+            cartContent.style.display = 'block';
+            rows.innerHTML = '';
+
+            let total = 0;
+            cart.forEach(item => {
+                let itemTotal = item.price * item.qty;
+                total += itemTotal;
+                rows.innerHTML += `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <img src="${item.img}" class="cart-item-img" alt="${item.name}">
+                                <span style="font-weight: bold;">${item.name}</span>
+                            </div>
+                        </td>
+                        <td>$${item.price.toFixed(2)}</td>
+                        <td>
+                            <button onclick="changeQty(${item.id}, -1)" class="qty-btn">-</button>
+                            <span style="margin: 0 8px; font-weight: bold;">${item.qty}</span>
+                            <button onclick="changeQty(${item.id}, 1)" class="qty-btn">+</button>
+                        </td>
+                        <td style="font-weight: bold;">$${itemTotal.toFixed(2)}</td>
+                        <td>
+                            <button onclick="removeFromCart(${item.id})" style="background: transparent; border: none; color: var(--danger); cursor: pointer; font-weight: bold;">Remove</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('subtotal-val').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('grandtotal-val').innerText = `$${total.toFixed(2)}`;
+        }
+
+        function checkout() {
+            alert('Order placed successfully! Thank you for purchasing from QuestLogs Hardware Store.');
+            cart = [];
+            saveCart();
+            renderCart();
+        }
+    </script>
+</body>
+</html>

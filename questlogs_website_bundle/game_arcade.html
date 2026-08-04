@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inflation Defender Arcade - QUESTLOGS</title>
+    
+<style>
+:root {
+    --bg-main: #060411;
+    --bg-card: #0e0926;
+    --bg-card-hover: #160e3b;
+    --accent-purple: #8141ff;
+    --accent-purple-bright: #9e6eff;
+    --text-white: #ffffff;
+    --text-muted: #a39ebc;
+    --border-color: #271a52;
+    --danger: #ff3366;
+    --success: #00e676;
+    --warning: #ffb300;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: var(--bg-main); color: var(--text-white); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* Header */
+.main-header { background: rgba(6, 4, 17, 0.95); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(8px); }
+.header-container { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
+.logo { font-size: 1.8rem; font-weight: 900; letter-spacing: 2px; color: #fff; text-decoration: none; }
+.logo-accent { color: var(--accent-purple); }
+.main-nav { display: flex; align-items: center; gap: 1.5rem; }
+.main-nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: color 0.2s; }
+.main-nav a:hover, .main-nav a.highlight-link { color: var(--accent-purple-bright); }
+.cart-link { background: #1a103c; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border-color); color: #fff !important; }
+.btn-login-nav { background: var(--accent-purple); color: #fff !important; padding: 6px 16px; border-radius: 20px; text-decoration: none; font-weight: 700; }
+.btn-login-nav:hover { background: var(--accent-purple-bright); }
+
+/* Layout & Footer */
+.page-wrapper { flex: 1; max-width: 1280px; width: 100%; margin: 0 auto; padding: 2rem; }
+.main-footer { background: #04020a; border-top: 1px solid var(--border-color); padding: 3rem 2rem 1rem 2rem; margin-top: auto; }
+.footer-container { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+.footer-col h3, .footer-col h4 { color: #fff; margin-bottom: 1rem; }
+.footer-col p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 0.5rem; }
+.footer-col ul li a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
+.footer-col ul li a:hover { color: var(--accent-purple-bright); }
+.footer-bottom { max-width: 1280px; margin: 0 auto; text-align: center; padding-top: 1.5rem; border-top: 1px solid #140d30; color: var(--text-muted); font-size: 0.85rem; }
+
+/* Buttons & Elements */
+.btn-primary { display: inline-block; background: var(--accent-purple); color: #fff; padding: 10px 22px; border-radius: 25px; font-weight: 700; text-decoration: none; border: none; cursor: pointer; transition: transform 0.2s, background 0.2s; }
+.btn-primary:hover { background: var(--accent-purple-bright); transform: translateY(-2px); }
+.btn-secondary { display: inline-block; background: transparent; color: #fff; padding: 10px 22px; border-radius: 25px; font-weight: 700; text-decoration: none; border: 1px solid var(--accent-purple); cursor: pointer; }
+.btn-secondary:hover { background: rgba(129, 65, 255, 0.2); }
+
+/* Grid Cards */
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+.card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s; }
+.card:hover { transform: translateY(-4px); border-color: var(--accent-purple); }
+.card-img-wrap { width: 100%; height: 190px; overflow: hidden; position: relative; }
+.card-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.card-body { padding: 1.2rem; display: flex; flex-direction: column; flex: 1; }
+.card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; color: #fff; }
+.card-desc { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; flex: 1; }
+.card-price { font-size: 1.3rem; font-weight: 800; color: var(--accent-purple-bright); margin-bottom: 0.8rem; }
+.rating { color: #ffca28; font-size: 0.85rem; margin-bottom: 0.5rem; }
+
+/* Modal Detail */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center; padding: 1rem; }
+.modal-content { background: var(--bg-card); border: 1px solid var(--accent-purple); border-radius: 12px; max-width: 650px; width: 100%; padding: 2rem; position: relative; }
+.close-modal { position: absolute; top: 1rem; right: 1.5rem; font-size: 1.8rem; color: #fff; cursor: pointer; }
+</style>
+
+    <style>
+        #canvas-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #000;
+            border: 2px solid var(--accent-purple);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(129,65,255,0.3);
+        }
+        canvas { display: block; width: 100%; height: 450px; background: #08051a; }
+        .arcade-hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1rem;
+            pointer-events: none;
+            text-shadow: 0 0 5px #000;
+        }
+        .game-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    
+<header class="main-header">
+    <div class="header-container">
+        <a href="index.html" class="logo">
+            <span class="logo-accent">QUEST</span>LOGS
+        </a>
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="shop.html">Equipment Shop (20+)</a>
+            <a href="game_mcdonalds.html" class="highlight-link">Fast-Food Satire Game</a>
+            <a href="game_arcade.html">Arcade Minigame</a>
+            <a href="blog.html">Blog & News</a>
+            <a href="cart.html" class="cart-link">
+                🛒 Cart (<span class="cart-badge">0</span>)
+            </a>
+            <a href="login.html" class="btn-login-nav">Account</a>
+        </nav>
+    </div>
+</header>
+
+
+    <main class="page-wrapper">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+            <span style="background: rgba(129,65,255,0.2); color: var(--accent-purple-bright); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">ACTION ARCADE MINIGAME</span>
+            <h1 style="font-size: 2.2rem; font-weight: 900; margin-top: 4px;">INFLATION DEFENDER ARCADE</h1>
+            <p style="color: var(--text-muted);">Use your mouse to aim and click to shoot down overpriced fast-food tags ($25 Burger, $12 Latte, $8 Donut) before they reach your gamer budget!</p>
+        </div>
+
+        <div id="canvas-wrap">
+            <div class="arcade-hud">
+                <div>SCORE: <span id="arcade-score" style="color: var(--accent-purple-bright);">0</span></div>
+                <div>LIVES: <span id="arcade-lives" style="color: var(--danger);">❤️❤️❤️</span></div>
+            </div>
+            <canvas id="arcadeCanvas" width="800" height="450"></canvas>
+            
+            <div id="arcade-overlay" class="game-overlay">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--accent-purple-bright);">INFLATION DEFENDER</h2>
+                <p style="margin-bottom: 2rem; color: var(--text-muted); text-align: center; max-width: 400px;">
+                    Move mouse to move laser cannon. Click left mouse button to shoot lasers at falling overpriced food tags!
+                </p>
+                <button onclick="startArcadeGame()" class="btn-primary" style="padding: 12px 32px; font-size: 1.1rem;">START PLAYING</button>
+            </div>
+        </div>
+    </main>
+
+    
+<footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-col">
+            <h3>QUESTLOGS NETWORK</h3>
+            <p>Your ultimate destination for professional esports hardware, gaming media, and corporate satire simulations.</p>
+            <p><strong>Address:</strong> 123 Quest Way, Suite 100, Austin, TX 78701</p>
+            <p><strong>Phone:</strong> (512) 555-0199</p>
+            <p><strong>Email:</strong> support@questlogs.com</p>
+        </div>
+        <div class="footer-col">
+            <h4>Quick Navigation</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Gaming Gear Store</a></li>
+                <li><a href="game_mcdonalds.html">McFast-Food Tycoon Game</a></li>
+                <li><a href="game_arcade.html">Inflation Defender Minigame</a></li>
+                <li><a href="blog.html">Industry News & Articles</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Customer Support</h4>
+            <ul>
+                <li><a href="cart.html">Shopping Cart & Checkout</a></li>
+                <li><a href="login.html">Login / Register</a></li>
+                <li><a href="article_inflation.html">Featured Report: Fast Food Inflation</a></li>
+                <li><a href="#">Privacy Policy & Terms</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Join QuestLogs Newsletter</h4>
+            <p>Get instant updates on equipment releases and new satirical releases.</p>
+            <form onsubmit="event.preventDefault(); alert('Subscribed successfully!');" style="margin-top:10px;">
+                <input type="email" placeholder="Enter your email" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #332363; background:#0b081d; color:#fff; margin-bottom:8px;">
+                <button type="submit" style="width:100%; padding:8px; background:#8141ff; color:#fff; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Subscribe</button>
+            </form>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 QuestLogs Interactive Network. All Rights Reserved. Address: 123 Quest Way, Suite 100, Austin, TX 78701 | Phone: (512) 555-0199</p>
+    </div>
+</footer>
+
+
+    <script src="products_store.js"></script>
+    <script>
+        const canvas = document.getElementById('arcadeCanvas');
+        const ctx = canvas.getContext('2d');
+        let score = 0;
+        let lives = 3;
+        let gameActive = false;
+        let targets = [];
+        let bullets = [];
+        let playerX = 400;
+
+        const targetLabels = ["$24 Burger", "$14 Latte", "$9 Donut", "$35 Meal", "+40% Surge", "$18 Fries"];
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            playerX = (e.clientX - rect.left) * (canvas.width / rect.width);
+        });
+
+        canvas.addEventListener('click', () => {
+            if (!gameActive) return;
+            bullets.push({ x: playerX, y: 410, radius: 4, speed: 10 });
+        });
+
+        function startArcadeGame() {
+            score = 0;
+            lives = 3;
+            targets = [];
+            bullets = [];
+            gameActive = true;
+            document.getElementById('arcade-overlay').style.display = 'none';
+            document.getElementById('arcade-score').innerText = score;
+            document.getElementById('arcade-lives').innerText = '❤️'.repeat(lives);
+            requestAnimationFrame(updateArcade);
+        }
+
+        function spawnTarget() {
+            if (Math.random() < 0.03) {
+                const label = targetLabels[Math.floor(Math.random() * targetLabels.length)];
+                targets.push({
+                    x: Math.random() * (canvas.width - 80) + 40,
+                    y: -30,
+                    speed: 1.5 + Math.random() * 2,
+                    label: label,
+                    width: 80,
+                    height: 30
+                });
+            }
+        }
+
+        function updateArcade() {
+            if (!gameActive) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Cannon
+            ctx.fillStyle = '#8141ff';
+            ctx.beginPath();
+            ctx.arc(playerX, 430, 20, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillRect(playerX - 4, 400, 8, 20);
+
+            // Update Bullets
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                let b = bullets[i];
+                b.y -= b.speed;
+                ctx.fillStyle = '#00e676';
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (b.y < 0) bullets.splice(i, 1);
+            }
+
+            // Spawn & Update Targets
+            spawnTarget();
+            for (let i = targets.length - 1; i >= 0; i--) {
+                let t = targets[i];
+                t.y += t.speed;
+
+                // Draw Target Box
+                ctx.fillStyle = '#ff3366';
+                ctx.fillRect(t.x - t.width/2, t.y, t.width, t.height);
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(t.label, t.x, t.y + 18);
+
+                // Collision with bullets
+                for (let j = bullets.length - 1; j >= 0; j--) {
+                    let b = bullets[j];
+                    if (b.x > t.x - t.width/2 && b.x < t.x + t.width/2 && b.y > t.y && b.y < t.y + t.height) {
+                        score += 100;
+                        document.getElementById('arcade-score').innerText = score;
+                        targets.splice(i, 1);
+                        bullets.splice(j, 1);
+                        break;
+                    }
+                }
+
+                // Target reached bottom
+                if (t && t.y > canvas.height) {
+                    targets.splice(i, 1);
+                    lives--;
+                    document.getElementById('arcade-lives').innerText = '❤️'.repeat(lives);
+                    if (lives <= 0) {
+                        gameActive = false;
+                        document.getElementById('arcade-overlay').style.display = 'flex';
+                        document.getElementById('arcade-overlay').querySelector('h2').innerText = "GAME OVER";
+                    }
+                }
+            }
+
+            if (gameActive) requestAnimationFrame(updateArcade);
+        }
+
+        document.addEventListener('DOMContentLoaded', updateCartCount);
+    </script>
+</body>
+</html>
