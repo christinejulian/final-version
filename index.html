@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QUESTLOGS - Gaming Gear & Corporate Satire</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QUESTLOGS | Gaming Gear & Fast-Food Satire</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -13,125 +14,137 @@
   <header class="navbar">
     <div class="logo">QUESTLOGS</div>
     <nav>
-      <a href="#hero">Home</a>
-      <a href="#satire-game">Fast Food Satire Game</a>
-      <a href="#store">Gaming Store</a>
-      <a href="#cart" class="cart-btn">Cart (<span id="cart-count">0</span>)</a>
+      <button class="nav-btn active" onclick="switchPage('home')">Home</button>
+      <button class="nav-btn" onclick="switchPage('shop')">Hardware Shop</button>
+      <button class="nav-btn" onclick="switchPage('game')">Fast Food Tycoon (Satire)</button>
     </nav>
+    <div class="cart-summary" onclick="switchPage('shop')">
+      🛒 Cart (<span id="cart-count">0</span>)
+    </div>
   </header>
 
-  <!-- Hero Section -->
-  <section id="hero" class="hero-section">
-    <div class="hero-content">
-      <h1>Your one-stop video game centre</h1>
-      <p>Play the latest corporate satirical sim or upgrade your gaming rig today.</p>
-      <a href="#store" class="btn-primary">SHOP NOW &rarr;</a>
-    </div>
-  </section>
-
-  <!-- 2D Fast Food Satire Game Section -->
-  <section id="satire-game" class="game-section">
-    <div class="section-title">
-      <h2>FAST FOOD TYCOON 2026: THE INFLATION SIMULATOR</h2>
-      <p>Inspired by classic 2D management games. Jack up prices, cut portion sizes, and deal with public outcry!</p>
-    </div>
-
-    <!-- Game Container -->
-    <div class="game-wrapper">
-      
-      <!-- Top Stats Bar -->
-      <div class="game-stats-bar">
-        <div class="stat">Company: <span id="brand-name">Burger Queen</span></div>
-        <div class="stat">Cash: <span id="game-cash">$50,000</span></div>
-        <div class="stat">Burger Price: <span id="game-price">$18.99</span></div>
-        <div class="stat">Customer Outrage: <span id="game-outrage">12%</span></div>
-        <div class="stat">Date: <span id="game-date">March 2026</span></div>
-      </div>
-
-      <!-- Main Game Canvas (2D Isometric/Top-Down View) -->
-      <div class="canvas-container">
-        <canvas id="gameCanvas" width="800" height="400"></canvas>
-      </div>
-
-      <!-- Control Panel / Management Dashboard -->
-      <div class="game-controls">
-        <div class="control-card">
-          <h3>Brand Switcher</h3>
-          <button class="game-btn" onclick="switchBrand('Burger Queen')">Burger Queen</button>
-          <button class="game-btn" onclick="switchBrand('Starbucks Inflation')">Starbucks</button>
-          <button class="game-btn" onclick="switchBrand('Dunkin Inflation')">Dunkin Donuts</button>
+  <!-- PAGE 1: HERO / HOME PAGE -->
+  <section id="page-home" class="page active">
+    <div class="hero">
+      <div class="hero-content">
+        <h1>Your one-stop video game centre</h1>
+        <p>Equip your battle station with top-tier gear, or experience our satirical real-time strategy simulation dissecting corporate fast-food inflation.</p>
+        <div class="hero-actions">
+          <button class="cta-btn" onclick="switchPage('shop')">SHOP HARDWARE ➔</button>
+          <button class="cta-btn secondary" onclick="switchPage('game')">PLAY SATIRE GAME ➔</button>
         </div>
-
-        <div class="control-card">
-          <h3>Pricing Strategy</h3>
-          <button class="game-btn buy" onclick="adjustPrice(2.00)">+ Raise Price ($2)</button>
-          <button class="game-btn sell" onclick="adjustPrice(-2.00)">- Lower Price ($2)</button>
-        </div>
-
-        <div class="control-card">
-          <h3>Operations & Greed</h3>
-          <button class="game-btn" onclick="shrinkflation()">Apply Shrinkflation (-20% Portion)</button>
-          <button class="game-btn warning" onclick="buyPRCampaign()">Launch PR Smear Campaign ($5,000)</button>
-        </div>
-      </div>
-
-      <!-- Game Log Feed -->
-      <div class="game-log" id="gameLog">
-        <p>[SYSTEM]: Game initialized. Welcome to Corporate Greed Simulator!</p>
       </div>
     </div>
   </section>
 
-  <!-- E-Commerce Gaming Gear Section -->
-  <section id="store" class="store-section">
-    <div class="section-title">
-      <h2>Featured Gaming Gear</h2>
-      <p>Get high-performance peripherals to dominate your games.</p>
+  <!-- PAGE 2: GAMING HARDWARE STORE -->
+  <section id="page-shop" class="page">
+    <div class="shop-header">
+      <h2>Battle Station Gear & Equipment</h2>
+      <p>Premium gaming gear engineered for high performance.</p>
     </div>
-
+    
     <div class="product-grid">
-      <!-- Product 1 -->
       <div class="product-card">
-        <div class="product-img-placeholder keyboard-img"></div>
-        <h3>RGB Mechanical Keyboard</h3>
-        <p class="price">$129.99</p>
-        <p class="desc">Tactile switches with custom per-key RGB backlighting.</p>
-        <button class="btn-secondary" onclick="addToCart('RGB Mechanical Keyboard', 129.99)">Add to Cart</button>
+        <div class="card-badge">HOT</div>
+        <img src="https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=500&auto=format&fit=crop" alt="Mechanical Keyboard">
+        <h3>Aero RGB Mechanical Keyboard</h3>
+        <p class="specs">Hot-swappable tactile switches with customizable per-key RGB backlighting.</p>
+        <div class="card-bottom">
+          <span class="price">$129.99</span>
+          <button onclick="addToCart('Aero RGB Keyboard', 129.99)">Add to Cart</button>
+        </div>
       </div>
 
-      <!-- Product 2 -->
       <div class="product-card">
-        <div class="product-img-placeholder controller-img"></div>
-        <h3>Pro Wireless Controller</h3>
-        <p class="price">$79.99</p>
-        <p class="desc">Ultra-low latency controller with customizable back paddles.</p>
-        <button class="btn-secondary" onclick="addToCart('Pro Wireless Controller', 79.99)">Add to Cart</button>
+        <img src="https://images.unsplash.com/photo-1527814050087-3793815479db?w=500&auto=format&fit=crop" alt="Gaming Mouse">
+        <h3>Phantom Ultra-Light Wireless Mouse</h3>
+        <p class="specs">26k DPI Optical Sensor with 58g ultra-lightweight ergonomic casing.</p>
+        <div class="card-bottom">
+          <span class="price">$79.99</span>
+          <button onclick="addToCart('Phantom Wireless Mouse', 79.99)">Add to Cart</button>
+        </div>
       </div>
 
-      <!-- Product 3 -->
       <div class="product-card">
-        <div class="product-img-placeholder headset-img"></div>
-        <h3>7.1 Surround Gaming Headset</h3>
-        <p class="price">$99.99</p>
-        <p class="desc">Immersive audio driver with noise-canceling detachable mic.</p>
-        <button class="btn-secondary" onclick="addToCart('7.1 Gaming Headset', 99.99)">Add to Cart</button>
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop" alt="Gaming Headset">
+        <h3>Pulse Pro Spatial Audio Headset</h3>
+        <p class="specs">50mm Neodymium drivers featuring active noise cancellation & detatchable mic.</p>
+        <div class="card-bottom">
+          <span class="price">$149.99</span>
+          <button onclick="addToCart('Pulse Pro Headset', 149.99)">Add to Cart</button>
+        </div>
       </div>
 
-      <!-- Product 4 -->
       <div class="product-card">
-        <div class="product-img-placeholder monitor-img"></div>
-        <h3>27" 240Hz Curved Gaming Monitor</h3>
-        <p class="price">$349.99</p>
-        <p class="desc">1ms response time, QHD resolution with HDR support.</p>
-        <button class="btn-secondary" onclick="addToCart('27 inch 240Hz Monitor', 349.99)">Add to Cart</button>
+        <img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&auto=format&fit=crop" alt="OLED Curved Monitor">
+        <h3>Vortex 34" Curved OLED Monitor</h3>
+        <p class="specs">240Hz refresh rate, 0.03ms response time with HDR True Black 400.</p>
+        <div class="card-bottom">
+          <span class="price">$899.99</span>
+          <button onclick="addToCart('Vortex 34 OLED', 899.99)">Add to Cart</button>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 QUESTLOGS. All rights reserved. Satirical Fast Food Game inspired by Molleindustria.</p>
-  </footer>
+  <!-- PAGE 3: FAST FOOD INFLATION SATIRE GAME -->
+  <section id="page-game" class="page">
+    <div class="game-wrapper">
+      <div class="game-header">
+        <h2>Corporate Fast-Food Greed Simulator</h2>
+        <p>Satirical RTS game: Raise meal prices, cut costs, lobby politicians, and blame inflation for shareholder profits!</p>
+      </div>
+
+      <div class="game-dashboard">
+        <!-- Status Bar -->
+        <div class="status-bar">
+          <div class="stat"><label>Corporate Treasury:</label> $<span id="treasury">25000</span></div>
+          <div class="stat"><label>Public Outrage:</label> <span id="outrage">10</span>%</div>
+          <div class="stat"><label>Quarterly Profit:</label> $<span id="profit">0</span></div>
+          <div class="stat"><label>Share Price:</label> $<span id="stock">15.00</span></div>
+        </div>
+
+        <!-- Strategy Control Panels -->
+        <div class="control-grid">
+          
+          <!-- Burger King Satire Panel -->
+          <div class="brand-panel bk">
+            <h3>👑 Monarch Burger</h3>
+            <p class="brand-sub">Current Combo Price: $<span id="bk-price">18.50</span></p>
+            <button class="action-btn" onclick="adjustPrice('bk', 2.00)">+ $2.00 "Supply Chain" Hike</button>
+            <button class="action-btn warn" onclick="shrinkflation('bk')">Shrink Patty Size (-15% Cost)</button>
+            <button class="action-btn corporate" onclick="automateStore('bk')">Replace Cashiers with AI Kiosks</button>
+          </div>
+
+          <!-- Starbucks Satire Panel -->
+          <div class="brand-panel sb">
+            <h3>☕ Star-Bucks Coffee</h3>
+            <p class="brand-sub">Current Latte Price: $<span id="sb-price">9.75</span></p>
+            <button class="action-btn" onclick="adjustPrice('sb', 1.50)">+ $1.50 "Oat Milk & Bean Surge"</button>
+            <button class="action-btn warn" onclick="shrinkflation('sb')">Fill 40% Cup with Ice</button>
+            <button class="action-btn corporate" onclick="lobbyTaxBreak('sb')">Lobby for Corporate Tax Exemption</button>
+          </div>
+
+          <!-- Dunkin Satire Panel -->
+          <div class="brand-panel dn">
+            <h3>🍩 Drunkin Donuts</h3>
+            <p class="brand-sub">Current Dozen Price: $<span id="dn-price">22.00</span></p>
+            <button class="action-btn" onclick="adjustPrice('dn', 2.50)">+ $2.50 "Premium Dynamic Pricing"</button>
+            <button class="action-btn warn" onclick="shrinkflation('dn')">Cut Glaze Thickness by 50%</button>
+            <button class="action-btn corporate" onclick="cutStaff('dn')">Understaff Shift to Save Overhead</button>
+          </div>
+
+        </div>
+
+        <!-- Corporate News Feed / Event Log -->
+        <div class="news-ticker">
+          <h4>🔴 Live PR & Economic Ticker:</h4>
+          <div id="news-log" class="news-content">Welcome to Corporate Executive Boardroom. Begin driving profit margins!</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <script src="main.js"></script>
 </body>
