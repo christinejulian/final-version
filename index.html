@@ -1,79 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuestLogs - Gaming Hub & Fast Food Empire</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUESTLOGS - Gaming Gear & Corporate Satire</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- RGB Border Header -->
-    <header class="rgb-border">
-        <div class="logo">QUESTLOGS</div>
-        <nav>
-            <a href="#hero">Home</a>
-            <a href="#store">Gear Shop</a>
-            <a href="#satire-game">Fast Food Tycoon</a>
-        </nav>
-    </header>
 
-    <!-- Hero Section -->
-    <section id="hero" class="hero">
-        <div class="hero-content">
-            <h1>YOUR ONE-STOP VIDEO GAME CENTRE</h1>
-            <p>Explore gear, play strategy simulations, and experience the ultimate gaming portal.</p>
-            <a href="#store" class="btn-rgb">SHOP NOW</a>
+  <!-- Top Navigation Header -->
+  <header class="navbar">
+    <div class="logo">QUESTLOGS</div>
+    <nav>
+      <a href="#hero">Home</a>
+      <a href="#satire-game">Fast Food Satire Game</a>
+      <a href="#store">Gaming Store</a>
+      <a href="#cart" class="cart-btn">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero-section">
+    <div class="hero-content">
+      <h1>Your one-stop video game centre</h1>
+      <p>Play the latest corporate satirical sim or upgrade your gaming rig today.</p>
+      <a href="#store" class="btn-primary">SHOP NOW &rarr;</a>
+    </div>
+  </section>
+
+  <!-- 2D Fast Food Satire Game Section -->
+  <section id="satire-game" class="game-section">
+    <div class="section-title">
+      <h2>FAST FOOD TYCOON 2026: THE INFLATION SIMULATOR</h2>
+      <p>Inspired by classic 2D management games. Jack up prices, cut portion sizes, and deal with public outcry!</p>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-wrapper">
+      
+      <!-- Top Stats Bar -->
+      <div class="game-stats-bar">
+        <div class="stat">Company: <span id="brand-name">Burger Queen</span></div>
+        <div class="stat">Cash: <span id="game-cash">$50,000</span></div>
+        <div class="stat">Burger Price: <span id="game-price">$18.99</span></div>
+        <div class="stat">Customer Outrage: <span id="game-outrage">12%</span></div>
+        <div class="stat">Date: <span id="game-date">March 2026</span></div>
+      </div>
+
+      <!-- Main Game Canvas (2D Isometric/Top-Down View) -->
+      <div class="canvas-container">
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
+      </div>
+
+      <!-- Control Panel / Management Dashboard -->
+      <div class="game-controls">
+        <div class="control-card">
+          <h3>Brand Switcher</h3>
+          <button class="game-btn" onclick="switchBrand('Burger Queen')">Burger Queen</button>
+          <button class="game-btn" onclick="switchBrand('Starbucks Inflation')">Starbucks</button>
+          <button class="game-btn" onclick="switchBrand('Dunkin Inflation')">Dunkin Donuts</button>
         </div>
-    </section>
 
-    <!-- Equipment Store -->
-    <section id="store" class="section">
-        <h2>GAMING GEAR STORE</h2>
-        <div class="grid">
-            <div class="card">
-                <h3>Pro RGB Mechanical Keyboard</h3>
-                <p class="price">$129.99</p>
-                <button onclick="addToCart('Keyboard')">Buy Now</button>
-            </div>
-            <div class="card">
-                <h3>Precision Wireless Gaming Mouse</h3>
-                <p class="price">$79.99</p>
-                <button onclick="addToCart('Mouse')">Buy Now</button>
-            </div>
-            <div class="card">
-                <h3>7.1 Surround Sound Headset</h3>
-                <p class="price">$99.99</p>
-                <button onclick="addToCart('Headset')">Buy Now</button>
-            </div>
+        <div class="control-card">
+          <h3>Pricing Strategy</h3>
+          <button class="game-btn buy" onclick="adjustPrice(2.00)">+ Raise Price ($2)</button>
+          <button class="game-btn sell" onclick="adjustPrice(-2.00)">- Lower Price ($2)</button>
         </div>
-    </section>
 
-    <!-- Satire Simulation Game Section -->
-    <section id="satire-game" class="section">
-        <h2>FAST FOOD EMPIRE: THE INFLATION SIMULATOR</h2>
-        <p class="subtitle">Satirical corporate simulation: Balance profit, raise prices, and cut quality!</p>
-        
-        <div class="game-container">
-            <div class="dashboard">
-                <div class="stat-box">Brand: <span id="brand-name">Burger Kingpin</span></div>
-                <div class="stat-box">Capital: $<span id="money">1000</span></div>
-                <div class="stat-box">Combo Price: $<span id="price">12.00</span></div>
-                <div class="stat-box">Quality: <span id="quality">100</span>%</div>
-                <div class="stat-box">Public Outrage: <span id="outrage">0</span>%</div>
-            </div>
-
-            <canvas id="gameCanvas" width="800" height="400"></canvas>
-
-            <div class="controls">
-                <button onclick="adjustPrice(1)">Raise Price (+$1)</button>
-                <button onclick="adjustPrice(-1)">Lower Price (-$1)</button>
-                <button onclick="cutQuality()">Shrinkflation (-10% Quality)</button>
-                <button onclick="lobbyGovernment()">Lobbying Campaign (-$200)</button>
-                <button onclick="switchBrand()">Switch Franchise</button>
-            </div>
+        <div class="control-card">
+          <h3>Operations & Greed</h3>
+          <button class="game-btn" onclick="shrinkflation()">Apply Shrinkflation (-20% Portion)</button>
+          <button class="game-btn warning" onclick="buyPRCampaign()">Launch PR Smear Campaign ($5,000)</button>
         </div>
-    </section>
+      </div>
 
-    <script src="main.js"></script>
+      <!-- Game Log Feed -->
+      <div class="game-log" id="gameLog">
+        <p>[SYSTEM]: Game initialized. Welcome to Corporate Greed Simulator!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- E-Commerce Gaming Gear Section -->
+  <section id="store" class="store-section">
+    <div class="section-title">
+      <h2>Featured Gaming Gear</h2>
+      <p>Get high-performance peripherals to dominate your games.</p>
+    </div>
+
+    <div class="product-grid">
+      <!-- Product 1 -->
+      <div class="product-card">
+        <div class="product-img-placeholder keyboard-img"></div>
+        <h3>RGB Mechanical Keyboard</h3>
+        <p class="price">$129.99</p>
+        <p class="desc">Tactile switches with custom per-key RGB backlighting.</p>
+        <button class="btn-secondary" onclick="addToCart('RGB Mechanical Keyboard', 129.99)">Add to Cart</button>
+      </div>
+
+      <!-- Product 2 -->
+      <div class="product-card">
+        <div class="product-img-placeholder controller-img"></div>
+        <h3>Pro Wireless Controller</h3>
+        <p class="price">$79.99</p>
+        <p class="desc">Ultra-low latency controller with customizable back paddles.</p>
+        <button class="btn-secondary" onclick="addToCart('Pro Wireless Controller', 79.99)">Add to Cart</button>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="product-card">
+        <div class="product-img-placeholder headset-img"></div>
+        <h3>7.1 Surround Gaming Headset</h3>
+        <p class="price">$99.99</p>
+        <p class="desc">Immersive audio driver with noise-canceling detachable mic.</p>
+        <button class="btn-secondary" onclick="addToCart('7.1 Gaming Headset', 99.99)">Add to Cart</button>
+      </div>
+
+      <!-- Product 4 -->
+      <div class="product-card">
+        <div class="product-img-placeholder monitor-img"></div>
+        <h3>27" 240Hz Curved Gaming Monitor</h3>
+        <p class="price">$349.99</p>
+        <p class="desc">1ms response time, QHD resolution with HDR support.</p>
+        <button class="btn-secondary" onclick="addToCart('27 inch 240Hz Monitor', 349.99)">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 QUESTLOGS. All rights reserved. Satirical Fast Food Game inspired by Molleindustria.</p>
+  </footer>
+
+  <script src="main.js"></script>
 </body>
 </html>
